@@ -1,0 +1,20 @@
+.status-indicators {
+    display: flex;
+    justify-content: space-around;
+}
+
+.status-box {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.status-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.booked { background-color: pink; }
+.selected { background-color: #fd5e14; }
+.preselected { background-color: #D3D3D3; }

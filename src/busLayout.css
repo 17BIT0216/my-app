@@ -1,0 +1,77 @@
+.bus-head
+{
+    text-align: center;
+}
+.bus-layout {
+    display: flex;
+    justify-content: space-around;
+}
+
+.upper-deck, .lower-deck {
+    padding: 10px;
+}
+
+.upper-deck {
+    width: 45%;
+}
+.deck-header
+{
+    color: red;
+}
+.lower-deck {
+    width: 45%;
+}
+
+.seats {
+    display: flex;
+    flex-wrap: wrap;
+}
+.seat.booked {
+    background-color: pink;
+    cursor: not-allowed;
+}
+
+.seat {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #333;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.seat.selected {
+    background-color: #fd5e14; /* Change to your preferred color for selected seats */
+    color: #fff;
+}
+
+/* Bus layout container */
+.bus-layout {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange decks in a column */
+    justify-content: space-around; /* Space evenly between decks */
+    align-items: center; /* Center-align items horizontally */
+  }
+  
+  /* Upper deck */
+  .upper-deck, .lower-deck {
+    margin-bottom: 2rem;
+    justify-content: space-around; /* Space evenly between seats */
+  }
+  
+  /* Individual seat */
+  .seat {
+    width: 100px; /* Adjust width of seat */
+    height: 50px; /* Adjust height of seat */
+    background-color: #D3D3D3; /* Grey color for seat */
+    border: 1px solid #000; /* Black border around seat */
+    margin: 5px; /* Add margin between seats */
+  }
+  .book-seats
+  {
+      margin-left: 44%;
+      padding: 10px 10px;
+  }
+
+  

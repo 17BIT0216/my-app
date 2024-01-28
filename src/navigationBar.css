@@ -1,0 +1,33 @@
+/* Navigation bar container */
+nav {
+    background-color: #333; /* Background color */
+  }
+  
+  /* Navigation bar list */
+  nav ul {
+    list-style-type: none; /* Remove bullet points */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    overflow: hidden; /* Ensure content doesn't overflow */
+  }
+  
+  /* Style the navigation bar links */
+  nav a {
+    display: block; /* Display links as block elements */
+    color: white; /* Text color */
+    text-align: center; /* Center-align text */
+    padding: 14px 16px; /* Add padding */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  /* Change the color of links on hover */
+  nav a:hover {
+    background-color: #ddd; /* Background color on hover */
+    color: black; /* Text color on hover */
+  }
+  
+  /* Active/current link */
+  nav .active {
+    background-color: #fd5e14; /* Background color for active link */
+  }
+  
