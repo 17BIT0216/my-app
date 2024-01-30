@@ -1,12 +1,21 @@
 import React from 'react';
 
-const PersonalInfoModal = ({ onClose, onSubmit }) => {
+const PersonalInfoModal = ({ onClose, onSubmit, selectedSeats }) => {
     // State for personal information
     const [formData, setFormData] = React.useState({
-        name: '',
+        id: generateId(), // Generate ID for the passenger
+        firstName: '',
+        lastName: '',
         email: '',
-        // Add more fields as needed
+        seatNumber: selectedSeats,
+        dateOfBooking: '',
     });
+
+    // Function to generate a unique ID
+    function generateId() {
+        // Generate a random ID using current timestamp
+        return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+    }
 
     // Handle form submission
     const handleSubmit = (e) => {
@@ -21,9 +30,11 @@ const PersonalInfoModal = ({ onClose, onSubmit }) => {
                 <span className="close" onClick={onClose}>&times;</span>
                 <form onSubmit={handleSubmit}>
                     {/* Input fields for personal information */}
-                    <input type="text" placeholder="Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                    <input type="text" placeholder="First Name" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} required />
+                    <input type="text" placeholder="Last Name" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} required />
                     <input type="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
-                    {/* Add more fields as needed */}
+                    <input type="text" placeholder="Seat Number" value={selectedSeats} required />
+                    <input type="date" placeholder="Date of Booking" value={formData.dateOfBooking} onChange={(e) => setFormData({ ...formData, dateOfBooking: e.target.value })} required />
                     <button type="submit">Submit</button>
                 </form>
             </div>

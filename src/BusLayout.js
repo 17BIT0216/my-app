@@ -14,7 +14,6 @@ const Reservation = () => {
     const [showPersonalModal, setShowPersonalModal] = useState(false);
     const [showToast, setShowToast] = useState(false);
 
-    // Function to initialize pre-booked seats
     const initializePreBookedSeats = () => {
         const initialBookedSeats = {};
         // Pre-booked seats: upper deck (rows 2, 4, 6) and lower deck (rows 1, 3, 5)
@@ -24,22 +23,42 @@ const Reservation = () => {
         for (let i = 0; i <= 14; i += 4) {
             initialBookedSeats[`lower-${i}`] = true;
         }
+        
+        // // Check if there are any previously booked seats in local storage
+        const storedBookedSeats = localStorage.getItem('bookedSeat');
+        if (storedBookedSeats) {
+            const parsedBookedSeats = JSON.parse(storedBookedSeats);
+            // Merge the previously booked seats with the pre-booked seats
+            Object.assign(initialBookedSeats, parsedBookedSeats);
+        }
+    
         setBookedSeats(initialBookedSeats);
     };
+    
 
     // Initialize pre-booked seats when component is rendered
     useEffect(() => {
         initializePreBookedSeats();
     }, []);
 
-    // Function to handle seat selection
     const handleSeatSelection = (deck, seatIndex) => {
-        // Check if the seat is already booked or selected
-        if (bookedSeats[`${deck}-${seatIndex}`] || selectedSeats.includes(`${deck}-${seatIndex}`)) {
-            return; // Return early if the seat is booked or selected
+        // Check if the seat is already booked
+        if (bookedSeats[`${deck}-${seatIndex}`]) {
+            return; // Return early if the seat is booked
         }
-
-        // Select the seat
+    
+        // Check if the seat is already selected
+        const seatKey = `${deck}-${seatIndex}`;
+        if (selectedSeats.includes(seatKey)) {
+            // If the seat is already selected, remove it from selectedSeats
+            const updatedSelectedSeats = selectedSeats.filter(seat => seat !== seatKey);
+            setSelectedSeats(updatedSelectedSeats);
+        } else {
+            // If the seat is not selected, add it to selectedSeats
+            setSelectedSeats([...selectedSeats, seatKey]);
+        }
+    
+        // Update the seat status in the respective deck
         if (deck === 'upper') {
             const updatedSeats = [...upperDeckSeats];
             updatedSeats[seatIndex] = !updatedSeats[seatIndex];
@@ -49,19 +68,17 @@ const Reservation = () => {
             updatedSeats[seatIndex] = !updatedSeats[seatIndex];
             setLowerDeckSeats(updatedSeats);
         }
-
-        // Update selected seats
-        setSelectedSeats([...selectedSeats, `${deck}-${seatIndex}`]);
     };
-
+    
     // Function to book selected seats and open modal
-    const bookSelectedSeats = () => {
-        if (selectedSeats.length > 0) {
-            setShowModal(true); // Update showModal state to open the modal
-        } else {
-            alert('Please select at least one seat.'); // Alert user if no seats are selected
-        }
-    };
+const bookSelectedSeats = () => {
+    if (selectedSeats.length > 0) {
+        setShowModal(true);
+    } else {
+        alert('Please select at least one seat.'); 
+    }
+};
+
 
     // Function to close modal and reset selected seats
     const handleCloseModal = () => {
@@ -77,14 +94,33 @@ const Reservation = () => {
 
     // Function to handle personal info submission
     const handlePersonalInfoSubmit = (formData) => {
-        // Store data in local storage
-        localStorage.setItem('userInfo', JSON.stringify(formData));
+        // Retrieve existing data from local storage
+        const existingData = localStorage.getItem('userInfo');
+        
+        // Parse existing data or initialize an empty array if no data exists
+        const userData = existingData ? JSON.parse(existingData) : [];
+    
+        // Append the new form data to the existing array
+        userData.push(formData);
+    
+        // Store updated data in local storage
+        localStorage.setItem('userInfo', JSON.stringify(userData));
+    
         setShowPersonalModal(false); // Close personal info modal
         setShowModal(false);
         setShowToast(true); // Show toast message
     };
+    
 
     const closeToast = () => {
+                // Create a copy of the current bookedSeats object
+                const updatedBookedSeats = { ...bookedSeats };
+                selectedSeats.forEach(seat => {
+                    updatedBookedSeats[seat] = true;
+                });
+                setBookedSeats(updatedBookedSeats);
+                localStorage.setItem('bookedSeat',JSON.stringify(updatedBookedSeats));
+                setSelectedSeats([]);
         setShowToast(false);
     };
 
@@ -126,7 +162,7 @@ const Reservation = () => {
             <div>
                 <Modal showModal={showModal} selectedSeats={selectedSeats} handleCloseModal={handleCloseModal} handleBookSeats={handleBookSeats} />
                 {showPersonalModal && (
-                    <PersonalInfoModal onClose={() => { setShowPersonalModal(false); setShowModal(false) }} onSubmit={handlePersonalInfoSubmit} />
+                    <PersonalInfoModal selectedSeats={selectedSeats} onClose={() => { setShowPersonalModal(false); setShowModal(false) }} onSubmit={handlePersonalInfoSubmit} />
                 )}
                 {showToast && <ToastMessage message="Congrats! Bus ticket booked." closeToast={closeToast} />}
             </div>
