@@ -39,7 +39,26 @@ button:hover {
     background-color: #0056b3;
 }
 
-.dashboard-container
-{
+.dashboard-container {
     margin-left: 20%;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .dashboard-container {
+        margin-left: 0; /* Adjust margin for mobile devices */
+        padding: 10px; /* Add padding for better spacing */
+    }
+    
+    h2 {
+        font-size: 20px; /* Decrease font size for smaller screens */
+    }
+
+    button {
+        font-size: 14px; /* Decrease button font size for smaller screens */
+    }
+
+    table {
+        font-size: 14px; /* Decrease table font size for smaller screens */
+    }
 }
